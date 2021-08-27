@@ -22,9 +22,9 @@ public class ControllerAdvice {
         }
 
         switch (httpStatus) {
-            case INTERNAL_SERVER_ERROR -> logger.error("", ex);
-            case BAD_REQUEST -> logger.info("400 Bad Request - " + ex);
-            default -> logger.warn("", ex);
+            case INTERNAL_SERVER_ERROR -> log.error("", ex);
+            case BAD_REQUEST -> log.info("400 Bad Request - " + ex);
+            default -> log.warn("", ex);
         }
 
         var response = new ErrorResponse(
