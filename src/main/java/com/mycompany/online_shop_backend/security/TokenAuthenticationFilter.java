@@ -22,6 +22,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+//todo: extend AuthenticationFilter or AbstractAuthenticationProcessingFilter???
 public class TokenAuthenticationFilter extends GenericFilterBean {
 
     private final TokenService tokenService;

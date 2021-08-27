@@ -32,9 +32,11 @@ public class AuthController {
     @ApiResponses({
             @ApiResponse(code = 201, message = "Successful registration")
     })
-    @PostMapping(path = "/v1/register",
+    @PostMapping(
+            path = "/v1/register",
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
     public AuthResponse register(@RequestBody RegisterRequest request) {
         logger.info("Register user with email {}", request.getEmail());
@@ -51,9 +53,11 @@ public class AuthController {
             @ApiResponse(code = 200, message = "Successful login"),
             @ApiResponse(code = 404, message = "Resource not found")
     })
-    @PostMapping(path = "/v1/login",
+    @PostMapping(
+            path = "/v1/login",
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public AuthResponse login(@RequestBody LoginRequest request) {
         logger.info("Login with email {}", request.getEmail());
         securityService.authenticate(request.getEmail(), request.getPassword());
