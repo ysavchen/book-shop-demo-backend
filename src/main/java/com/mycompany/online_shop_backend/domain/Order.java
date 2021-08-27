@@ -26,7 +26,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "addressee_name", nullable = false)
+    @Column(nullable = false)
     private String addresseeName;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -35,25 +35,23 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Phone phone;
 
-    @Column(name = "email")
     private String email;
 
     @CreatedDate
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<OrderBook> orderBooks = new HashSet<>();
 
     public void addBook(Book book) {
-        OrderBook orderBook = new OrderBook(this, book);
+        var orderBook = new OrderBook(this, book);
         orderBooks.add(orderBook);
     }
 
     public void removeBook(Book book) {
-        for (Iterator<OrderBook> iterator = orderBooks.iterator();
-             iterator.hasNext(); ) {
-            OrderBook orderBook = iterator.next();
+        Iterator<OrderBook> iterator = orderBooks.iterator();
+        while (iterator.hasNext()) {
+            var orderBook = iterator.next();
             if (orderBook.getOrder().equals(this) && orderBook.getBook().equals(book)) {
                 iterator.remove();
                 orderBook.setOrder(null);

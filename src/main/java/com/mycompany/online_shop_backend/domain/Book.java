@@ -23,19 +23,18 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "description", nullable = false)
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Author author;
 
-    @Column(name = "image")
     private String image;
 
-    @Column(name = "price", nullable = false)
+    @Column(nullable = false)
     private double price;
 
     @Override

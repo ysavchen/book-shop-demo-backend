@@ -19,7 +19,7 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "phone", nullable = false)
+    @Column(nullable = false)
     private String value;
 
     @Override
