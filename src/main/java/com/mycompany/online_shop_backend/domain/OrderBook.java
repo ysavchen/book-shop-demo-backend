@@ -1,11 +1,12 @@
 package com.mycompany.online_shop_backend.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
 @Entity
+@Getter @Setter
 @Table(name = "order_book")
 public class OrderBook {
 
