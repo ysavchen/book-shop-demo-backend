@@ -1,6 +1,7 @@
 package com.mycompany.online_shop_backend.service;
 
-import com.mycompany.online_shop_backend.dto.BookDto;
+import com.mycompany.online_shop_backend.dto.response.GetBookByIdResponseDto;
+import com.mycompany.online_shop_backend.dto.response.GetBooksResponseDto;
 import com.mycompany.online_shop_backend.exceptions.EntityNotFoundException;
 import com.mycompany.online_shop_backend.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +19,17 @@ public class BookService {
     private final BookRepository bookRepository;
 
     @Transactional(readOnly = true)
-    public BookDto getById(long id) {
+    public GetBookByIdResponseDto getById(long id) {
         return bookRepository.findById(id)
-                .map(BookDto::toDto)
+                .map(GetBookByIdResponseDto::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Book with id = " + id + " is not found"));
     }
 
     @Transactional(readOnly = true)
-    public List<BookDto> getAllBooks() {
+    public List<GetBooksResponseDto> getAllBooks() {
         return bookRepository.findAll()
                 .stream()
-                .map(BookDto::toDto)
+                .map(GetBooksResponseDto::toDto)
                 .collect(toList());
     }
 }

@@ -3,7 +3,8 @@ package com.mycompany.online_shop_backend.controllers;
 import com.google.gson.Gson;
 import com.mycompany.online_shop_backend.domain.Author;
 import com.mycompany.online_shop_backend.domain.Book;
-import com.mycompany.online_shop_backend.dto.BookDto;
+import com.mycompany.online_shop_backend.dto.response.GetBookByIdResponseDto;
+import com.mycompany.online_shop_backend.dto.response.GetBooksResponseDto;
 import com.mycompany.online_shop_backend.exceptions.EntityNotFoundException;
 import com.mycompany.online_shop_backend.repositories.BookRepository;
 import com.mycompany.online_shop_backend.repositories.UserRepository;
@@ -57,9 +58,10 @@ public class BookControllerTests {
             46.00
     );
 
-    private final BookDto bookOneDto = BookDto.toDto(bookOne);
-    private final BookDto bookTwoDto = BookDto.toDto(bookTwo);
-    private final List<BookDto> bookDtos = List.of(bookOneDto, bookTwoDto);
+    private final GetBooksResponseDto getBooksResponseDtoOne = GetBooksResponseDto.toDto(bookOne);
+    private final GetBooksResponseDto getBooksResponseDtoTwo = GetBooksResponseDto.toDto(bookTwo);
+    private final List<GetBooksResponseDto> getBooksDtos = List.of(getBooksResponseDtoOne, getBooksResponseDtoTwo);
+    private final GetBookByIdResponseDto getBookByIdResponseDto = GetBookByIdResponseDto.toDto(bookOne);
     private static final long NON_EXISTING_ID = 50L;
 
     private final Gson gson = new Gson();
@@ -78,18 +80,18 @@ public class BookControllerTests {
 
     @Test
     public void getBooks() throws Exception {
-        when(bookService.getAllBooks()).thenReturn(bookDtos);
+        when(bookService.getAllBooks()).thenReturn(getBooksDtos);
         mockMvc.perform(get("/v1/books"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(gson.toJson(bookDtos)));
+                .andExpect(content().json(gson.toJson(getBooksDtos)));
     }
 
     @Test
     public void getBookById() throws Exception {
-        when(bookService.getById(bookOne.getId())).thenReturn(bookOneDto);
-        mockMvc.perform(get("/v1/books/{id}", bookOneDto.getId()))
+        when(bookService.getById(bookOne.getId())).thenReturn(getBookByIdResponseDto);
+        mockMvc.perform(get("/v1/books/{id}", getBookByIdResponseDto.getId()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(gson.toJson(bookOneDto)));
+                .andExpect(content().json(gson.toJson(getBookByIdResponseDto)));
     }
 
     @Test

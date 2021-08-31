@@ -1,6 +1,7 @@
 package com.mycompany.online_shop_backend.controllers;
 
-import com.mycompany.online_shop_backend.dto.BookDto;
+import com.mycompany.online_shop_backend.dto.response.GetBookByIdResponseDto;
+import com.mycompany.online_shop_backend.dto.response.GetBooksResponseDto;
 import com.mycompany.online_shop_backend.service.BookService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -27,7 +28,7 @@ public class BookController {
             path = "/v1/books",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<BookDto> getBooks() {
+    public List<GetBooksResponseDto> getBooks() {
         return bookService.getAllBooks();
     }
 
@@ -40,7 +41,7 @@ public class BookController {
             path = "/v1/books/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public BookDto getBookById(@PathVariable("id") long id) {
+    public GetBookByIdResponseDto getBookById(@PathVariable("id") long id) {
         return bookService.getById(id);
     }
 }
