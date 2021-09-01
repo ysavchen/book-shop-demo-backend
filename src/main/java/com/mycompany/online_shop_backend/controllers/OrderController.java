@@ -2,8 +2,8 @@ package com.mycompany.online_shop_backend.controllers;
 
 import com.mycompany.online_shop_backend.dto.request.OrderRequest;
 import com.mycompany.online_shop_backend.dto.response.OrderResponse;
-import com.mycompany.online_shop_backend.service.OrderService;
-import com.mycompany.online_shop_backend.service.security.SecurityService;
+import com.mycompany.online_shop_backend.services.OrderService;
+import com.mycompany.online_shop_backend.services.security.SecurityService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

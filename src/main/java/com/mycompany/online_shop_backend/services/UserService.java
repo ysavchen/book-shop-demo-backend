@@ -1,11 +1,11 @@
-package com.mycompany.online_shop_backend.service;
+package com.mycompany.online_shop_backend.services;
 
 import com.mycompany.online_shop_backend.domain.User;
-import com.mycompany.online_shop_backend.dto.UserDto;
+import com.mycompany.online_shop_backend.dto.services.UserDto;
 import com.mycompany.online_shop_backend.dto.request.RegisterRequest;
 import com.mycompany.online_shop_backend.exceptions.EntityNotFoundException;
 import com.mycompany.online_shop_backend.repositories.UserRepository;
-import com.mycompany.online_shop_backend.service.security.SecurityService;
+import com.mycompany.online_shop_backend.services.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

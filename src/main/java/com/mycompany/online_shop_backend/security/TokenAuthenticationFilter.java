@@ -1,7 +1,7 @@
 package com.mycompany.online_shop_backend.security;
 
 import com.mycompany.online_shop_backend.exceptions.NotAuthorizedException;
-import com.mycompany.online_shop_backend.service.security.TokenService;
+import com.mycompany.online_shop_backend.services.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

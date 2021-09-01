@@ -1,8 +1,9 @@
 package com.mycompany.online_shop_backend.controllers;
 
+import com.mycompany.online_shop_backend.dto.services.BookDto;
 import com.mycompany.online_shop_backend.dto.response.GetBookByIdResponseDto;
 import com.mycompany.online_shop_backend.dto.response.GetBooksResponseDto;
-import com.mycompany.online_shop_backend.service.BookService;
+import com.mycompany.online_shop_backend.services.BookService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -29,7 +30,10 @@ public class BookController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public List<GetBooksResponseDto> getBooks() {
-        return bookService.getAllBooks();
+        return bookService.getAllBooks()
+                .stream()
+                .map(GetBooksResponseDto::toDto)
+                .toList();
     }
 
     @ApiOperation("Gets a book with id")
@@ -42,6 +46,7 @@ public class BookController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public GetBookByIdResponseDto getBookById(@PathVariable("id") long id) {
-        return bookService.getById(id);
+        BookDto bookDto = bookService.getById(id);
+        return GetBookByIdResponseDto.toDto(bookDto);
     }
 }

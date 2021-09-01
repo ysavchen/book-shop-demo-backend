@@ -3,7 +3,7 @@ package com.mycompany.online_shop_backend.dto.request;
 import com.mycompany.online_shop_backend.domain.Address;
 import com.mycompany.online_shop_backend.domain.Order;
 import com.mycompany.online_shop_backend.domain.Phone;
-import com.mycompany.online_shop_backend.dto.BookDto;
+import com.mycompany.online_shop_backend.dto.services.BookDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

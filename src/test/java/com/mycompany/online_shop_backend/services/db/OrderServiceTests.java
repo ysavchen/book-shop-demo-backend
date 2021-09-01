@@ -1,13 +1,13 @@
-package com.mycompany.online_shop_backend.service.db;
+package com.mycompany.online_shop_backend.services.db;
 
 import com.mycompany.online_shop_backend.domain.*;
-import com.mycompany.online_shop_backend.dto.BookDto;
+import com.mycompany.online_shop_backend.dto.services.BookDto;
 import com.mycompany.online_shop_backend.dto.request.OrderRequest;
 import com.mycompany.online_shop_backend.exceptions.EntityNotFoundException;
 import com.mycompany.online_shop_backend.repositories.BookRepository;
 import com.mycompany.online_shop_backend.repositories.OrderBookRepository;
 import com.mycompany.online_shop_backend.repositories.OrderRepository;
-import com.mycompany.online_shop_backend.service.OrderService;
+import com.mycompany.online_shop_backend.services.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -2,15 +2,13 @@ package com.mycompany.online_shop_backend.dto.response;
 
 import com.mycompany.online_shop_backend.domain.Order;
 import com.mycompany.online_shop_backend.domain.OrderBook;
-import com.mycompany.online_shop_backend.dto.BookDto;
+import com.mycompany.online_shop_backend.dto.services.BookDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.ZoneOffset;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Data
 @NoArgsConstructor
@@ -36,7 +34,7 @@ public class OrderResponse {
                 order.getOrderBooks().stream()
                         .map(OrderBook::getBook)
                         .map(BookDto::toDto)
-                        .collect(toList())
+                        .toList()
         );
     }
 }

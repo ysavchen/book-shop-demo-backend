@@ -1,12 +1,15 @@
 package com.mycompany.online_shop_backend.controllers;
 
-import com.mycompany.online_shop_backend.dto.UserDto;
+import com.mycompany.online_shop_backend.dto.response.LoggedInUserDto;
+import com.mycompany.online_shop_backend.dto.response.RegisteredUserDto;
+import com.mycompany.online_shop_backend.dto.services.UserDto;
 import com.mycompany.online_shop_backend.dto.request.LoginRequest;
 import com.mycompany.online_shop_backend.dto.request.RegisterRequest;
-import com.mycompany.online_shop_backend.dto.response.AuthResponse;
-import com.mycompany.online_shop_backend.service.UserService;
-import com.mycompany.online_shop_backend.service.security.SecurityService;
-import com.mycompany.online_shop_backend.service.security.TokenService;
+import com.mycompany.online_shop_backend.dto.response.LoginResponse;
+import com.mycompany.online_shop_backend.dto.response.RegisterResponse;
+import com.mycompany.online_shop_backend.services.UserService;
+import com.mycompany.online_shop_backend.services.security.SecurityService;
+import com.mycompany.online_shop_backend.services.security.TokenService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -38,14 +41,14 @@ public class AuthController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthResponse register(@RequestBody RegisterRequest request) {
+    public RegisterResponse register(@RequestBody RegisterRequest request) {
         log.info("Register user with email {}", request.getEmail());
 
         UserDto userDto = userService.register(request);
-        String token = tokenService.generateToken(userDto.getEmail());
+        String token = tokenService.generateToken(userDto.email());
         long tokenExpiration = tokenService.getTokenExpiration();
 
-        return new AuthResponse(token, tokenExpiration, userDto);
+        return new RegisterResponse(token, tokenExpiration, RegisteredUserDto.toDto(userDto));
     }
 
     @ApiOperation("Logs in a user")
@@ -58,14 +61,14 @@ public class AuthController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public AuthResponse login(@RequestBody LoginRequest request) {
+    public LoginResponse login(@RequestBody LoginRequest request) {
         log.info("Login with email {}", request.getEmail());
         securityService.authenticate(request.getEmail(), request.getPassword());
 
         UserDto userDto = userService.findByEmail(request.getEmail());
-        String token = tokenService.generateToken(userDto.getEmail());
+        String token = tokenService.generateToken(userDto.email());
         long tokenExpiration = tokenService.getTokenExpiration();
 
-        return new AuthResponse(token, tokenExpiration, userDto);
+        return new LoginResponse(token, tokenExpiration, LoggedInUserDto.toDto(userDto));
     }
 }

@@ -1,6 +1,6 @@
 package com.mycompany.online_shop_backend.dto.response;
 
-import com.mycompany.online_shop_backend.domain.Book;
+import com.mycompany.online_shop_backend.dto.services.BookDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,10 +17,10 @@ public class GetBookByIdResponseDto {
     private String image;
     private double price;
 
-    public static GetBookByIdResponseDto toDto(Book book) {
+    public static GetBookByIdResponseDto toDto(BookDto book) {
         return new GetBookByIdResponseDto(
                 book.getId(), book.getTitle(), book.getDescription(),
-                book.getAuthor().getFullName(),
+                book.getAuthor(),
                 book.getImage(), book.getPrice()
         );
     }

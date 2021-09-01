@@ -2,19 +2,19 @@ package com.mycompany.online_shop_backend.controllers;
 
 import com.google.gson.Gson;
 import com.mycompany.online_shop_backend.domain.User;
-import com.mycompany.online_shop_backend.dto.UserDto;
+import com.mycompany.online_shop_backend.dto.response.*;
+import com.mycompany.online_shop_backend.dto.services.UserDto;
 import com.mycompany.online_shop_backend.dto.request.LoginRequest;
 import com.mycompany.online_shop_backend.dto.request.RegisterRequest;
-import com.mycompany.online_shop_backend.dto.response.AuthResponse;
 import com.mycompany.online_shop_backend.exceptions.NotAuthorizedException;
 import com.mycompany.online_shop_backend.repositories.UserRepository;
 import com.mycompany.online_shop_backend.security.SecurityConfiguration;
 import com.mycompany.online_shop_backend.security.TokenAuthenticationFilter;
 import com.mycompany.online_shop_backend.security.TokenProperties;
 import com.mycompany.online_shop_backend.security.UserDetailsServiceImpl;
-import com.mycompany.online_shop_backend.service.UserService;
-import com.mycompany.online_shop_backend.service.security.SecurityService;
-import com.mycompany.online_shop_backend.service.security.TokenService;
+import com.mycompany.online_shop_backend.services.UserService;
+import com.mycompany.online_shop_backend.services.security.SecurityService;
+import com.mycompany.online_shop_backend.services.security.TokenService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -54,13 +54,17 @@ public class AuthControllerTests {
             userOnePasswordEncoded
     );
     private final UserDto userOneDto = UserDto.toDto(userOne);
+    private final RegisteredUserDto registeredUserDtoOne = RegisteredUserDto.toDto(userOneDto);
+    private final LoggedInUserDto loggedInUserDto = LoggedInUserDto.toDto(userOneDto);
+
     private final RegisterRequest registerRequest = new RegisterRequest(
-            userOneDto.getFirstName(),
-            userOneDto.getLastName(),
+            userOneDto.firstName(),
+            userOneDto.lastName(),
             userOneEmail,
             userOnePassword
     );
-    private final AuthResponse authResponse = new AuthResponse(token, tokenExpiration, userOneDto);
+    private final RegisterResponse registerResponse = new RegisterResponse(token, tokenExpiration, registeredUserDtoOne);
+    private final LoginResponse loginResponse = new LoginResponse(token, tokenExpiration, loggedInUserDto);
     private final LoginRequest loginRequest = new LoginRequest(userOneEmail, userOnePassword);
 
     private final Gson gson = new Gson();
@@ -93,7 +97,7 @@ public class AuthControllerTests {
                         .content(gson.toJson(registerRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(gson.toJson(authResponse)));
+                .andExpect(content().json(gson.toJson(registerResponse)));
     }
 
     @Test
@@ -101,7 +105,7 @@ public class AuthControllerTests {
         when(securityService.authenticate(anyString(), anyString()))
                 .thenReturn(new UsernamePasswordAuthenticationToken(userOneEmail, userOnePassword));
         when(userService.findByEmail(registerRequest.getEmail())).thenReturn(userOneDto);
-        when(tokenService.generateToken(userOneDto.getEmail())).thenReturn(token);
+        when(tokenService.generateToken(userOneDto.email())).thenReturn(token);
         when(tokenService.getTokenExpiration()).thenReturn(tokenExpiration);
 
         mockMvc.perform(
@@ -111,7 +115,7 @@ public class AuthControllerTests {
                         .content(gson.toJson(loginRequest)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(gson.toJson(authResponse)));
+                .andExpect(content().json(gson.toJson(loginResponse)));
     }
 
     @Test

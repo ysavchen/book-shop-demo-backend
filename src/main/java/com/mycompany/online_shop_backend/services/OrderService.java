@@ -1,4 +1,4 @@
-package com.mycompany.online_shop_backend.service;
+package com.mycompany.online_shop_backend.services;
 
 import com.mycompany.online_shop_backend.domain.Order;
 import com.mycompany.online_shop_backend.dto.request.OrderRequest;
@@ -38,7 +38,7 @@ public class OrderService {
                     () -> {
                         String message = "Book (id = " + bookId + ") is not found. " +
                                 "Order for " + order.getEmail() + " is not saved.";
-                        logger.error(message);
+                        log.error(message);
                         throw new EntityNotFoundException(message);
                     }
             );

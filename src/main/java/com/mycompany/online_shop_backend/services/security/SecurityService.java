@@ -1,4 +1,4 @@
-package com.mycompany.online_shop_backend.service.security;
+package com.mycompany.online_shop_backend.services.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
