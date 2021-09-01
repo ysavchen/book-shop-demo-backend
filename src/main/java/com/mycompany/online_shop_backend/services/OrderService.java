@@ -2,7 +2,7 @@ package com.mycompany.online_shop_backend.services;
 
 import com.mycompany.online_shop_backend.domain.Order;
 import com.mycompany.online_shop_backend.dto.request.OrderRequest;
-import com.mycompany.online_shop_backend.dto.response.OrderResponse;
+import com.mycompany.online_shop_backend.dto.services.OrderDto;
 import com.mycompany.online_shop_backend.exceptions.EntityNotFoundException;
 import com.mycompany.online_shop_backend.repositories.BookRepository;
 import com.mycompany.online_shop_backend.repositories.OrderBookRepository;
@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class OrderService {
     private final BookRepository bookRepository;
 
     @Transactional
-    public OrderResponse save(OrderRequest request) {
+    public OrderDto save(OrderRequest request) {
         Order order = OrderRequest.toEntity(request);
         Order saved = orderRepository.save(order);
 
@@ -44,14 +42,14 @@ public class OrderService {
             );
         });
 
-        return OrderResponse.toDto(saved);
+        return OrderDto.toDto(saved);
     }
 
     @Transactional(readOnly = true)
-    public List<OrderResponse> getOrdersByEmail(String email) {
+    public List<OrderDto> getOrdersByEmail(String email) {
         return orderRepository.findByEmail(email)
                 .stream()
-                .map(OrderResponse::toDto)
-                .collect(toList());
+                .map(OrderDto::toDto)
+                .toList();
     }
 }

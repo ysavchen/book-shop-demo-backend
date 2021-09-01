@@ -2,27 +2,23 @@ package com.mycompany.online_shop_backend.dto.services;
 
 import com.mycompany.online_shop_backend.domain.Author;
 import com.mycompany.online_shop_backend.domain.Book;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class BookDto {
-
-    private long id;
-    private String title;
-    private String description;
-    private String author;
-    private String image;
-    private double price;
-
+public record BookDto(
+        long id,
+        String title,
+        String description,
+        String author,
+        String image,
+        double price
+) {
     public static BookDto toDto(Book book) {
         return new BookDto(
-                book.getId(), book.getTitle(), book.getDescription(),
+                book.getId(),
+                book.getTitle(),
+                book.getDescription(),
                 book.getAuthor().getFullName(),
-                book.getImage(), book.getPrice()
+                book.getImage(),
+                book.getPrice()
         );
     }
 

@@ -1,30 +1,22 @@
-package com.mycompany.online_shop_backend.dto.response;
+package com.mycompany.online_shop_backend.dto.services;
 
 import com.mycompany.online_shop_backend.domain.Order;
 import com.mycompany.online_shop_backend.domain.OrderBook;
-import com.mycompany.online_shop_backend.dto.services.BookDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.ZoneOffset;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class OrderResponse {
-
-    private long id;
-    private String name;
-    private String address;
-    private String phone;
-    private String email;
-    private String createdAt;
-    private List<BookDto> books;
-
-    public static OrderResponse toDto(Order order) {
-        return new OrderResponse(
+public record OrderDto(
+        long id,
+        String name,
+        String address,
+        String phone,
+        String email,
+        String createdAt,
+        List<BookDto> books
+) {
+    public static OrderDto toDto(Order order) {
+        return new OrderDto(
                 order.getId(),
                 order.getAddresseeName(),
                 order.getAddress().getValue(),

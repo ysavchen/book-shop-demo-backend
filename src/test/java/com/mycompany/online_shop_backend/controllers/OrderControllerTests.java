@@ -2,9 +2,11 @@ package com.mycompany.online_shop_backend.controllers;
 
 import com.google.gson.Gson;
 import com.mycompany.online_shop_backend.domain.*;
+import com.mycompany.online_shop_backend.dto.response.CreatedOrderResponse;
+import com.mycompany.online_shop_backend.dto.response.UserOrderDto;
 import com.mycompany.online_shop_backend.dto.services.BookDto;
 import com.mycompany.online_shop_backend.dto.request.OrderRequest;
-import com.mycompany.online_shop_backend.dto.response.OrderResponse;
+import com.mycompany.online_shop_backend.dto.services.OrderDto;
 import com.mycompany.online_shop_backend.repositories.UserRepository;
 import com.mycompany.online_shop_backend.security.SecurityConfiguration;
 import com.mycompany.online_shop_backend.security.TokenAuthenticationFilter;
@@ -91,16 +93,9 @@ public class OrderControllerTests {
             userOne.getEmail(),
             bookDtos
     );
-    private final OrderResponse orderResponse = new OrderResponse(
-            1L,
-            userOne.getFirstName() + " " + userOne.getLastName(),
-            "Address, 1",
-            "+1111 1111",
-            userOne.getEmail(),
-            order.getCreatedAt().toInstant(ZoneOffset.UTC).toString(),
-            bookDtos
-    );
-
+    private final OrderDto orderDto = OrderDto.toDto(order);
+    private final CreatedOrderResponse createdOrderResponse = CreatedOrderResponse.toDto(orderDto);
+    private final UserOrderDto userOrderDto = UserOrderDto.toDto(orderDto);
     private final Set<OrderBook> orderBooks = Set.of(new OrderBook(order, bookOne), new OrderBook(order, bookTwo));
 
     private final Gson gson = new Gson();
@@ -124,7 +119,7 @@ public class OrderControllerTests {
 
     @Test
     public void createOrder() throws Exception {
-        when(orderService.save(any(OrderRequest.class))).thenReturn(orderResponse);
+        when(orderService.save(any(OrderRequest.class))).thenReturn(orderDto);
 
         mockMvc.perform(
                 post("/v1/orders")
@@ -133,20 +128,20 @@ public class OrderControllerTests {
                         .content(gson.toJson(orderRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(gson.toJson(orderResponse)));
+                .andExpect(content().json(gson.toJson(createdOrderResponse)));
     }
 
     @WithMockUser(username = "userOne@test.com")
     @Test
     public void getUserOrders() throws Exception {
         when(securityService.getUsernameFromRequest(any(HttpServletRequest.class))).thenReturn(userOne.getEmail());
-        when(orderService.getOrdersByEmail(userOne.getEmail())).thenReturn(List.of(orderResponse));
+        when(orderService.getOrdersByEmail(userOne.getEmail())).thenReturn(List.of(orderDto));
 
         mockMvc.perform(
                 get("/v1/users/{id}/orders", userOne.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(gson.toJson(List.of(orderResponse))));
+                .andExpect(content().json(gson.toJson(List.of(userOrderDto))));
     }
 }

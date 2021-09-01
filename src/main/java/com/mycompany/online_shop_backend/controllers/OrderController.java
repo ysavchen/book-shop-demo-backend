@@ -1,7 +1,9 @@
 package com.mycompany.online_shop_backend.controllers;
 
 import com.mycompany.online_shop_backend.dto.request.OrderRequest;
-import com.mycompany.online_shop_backend.dto.response.OrderResponse;
+import com.mycompany.online_shop_backend.dto.response.CreatedOrderResponse;
+import com.mycompany.online_shop_backend.dto.response.UserOrderDto;
+import com.mycompany.online_shop_backend.dto.services.OrderDto;
 import com.mycompany.online_shop_backend.services.OrderService;
 import com.mycompany.online_shop_backend.services.security.SecurityService;
 import io.swagger.annotations.ApiOperation;
@@ -33,8 +35,9 @@ public class OrderController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponse createOrder(@RequestBody OrderRequest request) {
-        return orderService.save(request);
+    public CreatedOrderResponse createOrder(@RequestBody OrderRequest request) {
+        OrderDto orderDto = orderService.save(request);
+        return CreatedOrderResponse.toDto(orderDto);
     }
 
     @ApiOperation("Gets orders for an authenticated user")
@@ -46,8 +49,9 @@ public class OrderController {
             path = "/v1/users/{id}/orders",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<OrderResponse> getUserOrders(HttpServletRequest request) {
+    public List<UserOrderDto> getUserOrders(HttpServletRequest request) {
         String email = securityService.getUsernameFromRequest(request);
-        return orderService.getOrdersByEmail(email);
+        List<OrderDto> orderDtos = orderService.getOrdersByEmail(email);
+        return orderDtos.stream().map(UserOrderDto::toDto).toList();
     }
 }

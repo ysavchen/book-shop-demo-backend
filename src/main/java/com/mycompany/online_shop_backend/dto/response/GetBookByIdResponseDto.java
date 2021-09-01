@@ -19,9 +19,12 @@ public class GetBookByIdResponseDto {
 
     public static GetBookByIdResponseDto toDto(BookDto book) {
         return new GetBookByIdResponseDto(
-                book.getId(), book.getTitle(), book.getDescription(),
-                book.getAuthor(),
-                book.getImage(), book.getPrice()
+                book.id(),
+                book.title(),
+                book.description(),
+                book.author(),
+                book.image(),
+                book.price()
         );
     }
 
